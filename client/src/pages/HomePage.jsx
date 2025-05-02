@@ -1,6 +1,7 @@
 import HeroSection from "../components/HeroSection";
 import RecentListings from "../components/RecentListings";
 import ImpactSection from "../components/ImpactSection";
+import Testimonials from "../components/Testimonials";
 
 
 export default function HomePage() {
@@ -9,6 +10,7 @@ export default function HomePage() {
       <HeroSection />
       <RecentListings/>
       <ImpactSection />
+      <Testimonials/>
     </div>
   );
 }
