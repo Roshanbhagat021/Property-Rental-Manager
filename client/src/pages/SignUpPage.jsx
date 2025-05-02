@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Button } from "../components/ui/button";
+import { useNavigate } from "react-router-dom";
+const VITE_API_BASEURL = import.meta.env.VITE_API_BASEURL;
+
+import axios from "axios"
 
 export default function SignUpPage() {
   const [userType, setUserType] = useState("tenant");
@@ -7,8 +11,11 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [occupation, setOccupation] = useState("");
-  const [aadharNo, setAadharNo] = useState("");
+  const [aadharNo, setaadharNo] = useState("");
   const [cibilScore, setCibilScore] = useState("");
+
+
+  const navigate = useNavigate()
 
   const occupations = [
     { value: "", label: "Select Occupation" },
@@ -19,13 +26,29 @@ export default function SignUpPage() {
     { value: "other", label: "Other" },
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    const formData =
-      userType === "tenant"
+    const formData = userType === "tenant"
         ? { name, email, password, occupation, aadharNo, cibilScore }
         : { name, email, password };
-    console.log(formData);
+        console.log(formData);
+    if(userType == "tenant"){
+        try {
+           const response =  await axios.post(`${VITE_API_BASEURL}/tenant/register`,formData)
+           console.log('response: ', response);
+            navigate("/")
+        } catch (error) {
+            console.log(error?.message)
+        }
+    }else{
+      try {
+        const response =  await axios.post(`${VITE_API_BASEURL}/landlord/register`,formData)
+        console.log('response: ', response);
+         navigate("/")
+     } catch (error) {
+         console.log(error?.message)
+     }
+    }
   };
 
   return (
@@ -84,7 +107,7 @@ export default function SignUpPage() {
               onChange={(e) => setName(e.target.value)}
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-              placeholder="John Doe"
+              placeholder="Dinesh lal yadav"
             />
           </div>
 
@@ -154,13 +177,13 @@ export default function SignUpPage() {
                   htmlFor="aadharNo"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Aadhar Number
+                  Aadhaar Number
                 </label>
                 <input
                   type="text"
                   id="aadharNo"
                   value={aadharNo}
-                  onChange={(e) => setAadharNo(e.target.value)}
+                  onChange={(e) => setaadharNo(e.target.value)}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   placeholder="1234 5678 9012"

@@ -12,13 +12,15 @@ export default function HeroSection() {
         <p className="text-lg text-gray-700 mb-6">
           Whether you're a tenant looking for a cozy space or a landowner ready to rent out — we’ve got you covered with verified listings and secure communication.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <Link to={"/allproperties"}>
-          <Button className="bg-indigo-600 hover:bg-indigo-700">Explore Listings</Button>
+        <div className="flex flex-col sm:flex-row gap-4  justify-center lg:justify-start">
+            <Link to={"/properties"}>
+          <Button className="bg-indigo-600 cursor-pointer hover:bg-indigo-700">Explore Listings</Button>
             </Link>
-          <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+            <Link to={"addpropertie"}>
+          <Button variant="outline" className="border-indigo-600 cursor-pointer text-indigo-600 hover:bg-indigo-50">
             List Your Property
           </Button>
+            </Link>
         </div>
         <div className="mt-6 text-sm text-gray-500">
           100% verified listings • Secure messaging • Zero commission

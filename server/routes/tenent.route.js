@@ -7,7 +7,8 @@ const tenantRouter = express.Router();
 
 
 tenantRouter.post("/register", async (req, res) => {
-  const { name, email, password, occupation, aadhaarNo, cibilScore } = req.body;
+  console.log('req: ', req.body);
+  const { name, email, password, occupation, aadharNo, cibilScore } = req.body;
 
   try {
     const existing = await Tenant.findOne({ email });
@@ -25,7 +26,7 @@ tenantRouter.post("/register", async (req, res) => {
         email,
         password: hash,
         occupation,
-        aadhaarNo,
+        aadharNo,
         cibilScore
       });
 

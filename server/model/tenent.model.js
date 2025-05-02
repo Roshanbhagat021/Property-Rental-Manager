@@ -25,10 +25,9 @@ const tenantSchema = new mongoose.Schema({
     required: true
   },
 
-  aadhaarNo: {
+  aadharNo: {
     type: String,
     required: true,
-    unique: true,
     length: 12
   },
 

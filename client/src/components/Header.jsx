@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const {isAuth,userName,logout} = useContext(AuthContext)
+  console.log('name: ', userName);
+  
+  console.log('isAuth: ', isAuth);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -30,22 +36,49 @@ export default function Header() {
             Home
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
           </Link>
-          <Link to={"/allproperties"} className="relative group ">
+          <Link to={"/properties"} className="relative group ">
             Explore Listings
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
           </Link>
          
-          <Link to={"/login"}>
-          <Button variant="outline" className="text-white cursor-pointer border-white hover:bg-white hover:text-indigo-600">
-            Login
-          </Button>
-          </Link>
+          {isAuth ? (
+  <div className="relative group">
+    <button className="flex items-center space-x-2 focus:outline-none">
+      <span className="text-white font-medium bg-indigo-700 hover:bg-indigo-800 px-4 py-2 rounded-full transition-all">
+        {userName}
+      </span>
+    </button>
+    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200">
+      <Link 
+        to="/my-properties" 
+        className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+      >
+        My Properties
+      </Link>
+      <button
+        onClick={logout}
+        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="flex space-x-4">
+    <Link to="/login">
+      <Button variant="outline" className="text-white border-white hover:bg-white hover:text-indigo-600">
+        Login
+      </Button>
+    </Link>
+    <Link to="/signup">
+      <Button variant="outline" className="text-white border-white hover:bg-white hover:text-indigo-600">
+        SignUp
+      </Button>
+    </Link>
+  </div>
+)}
 
-          <Link to={"/signup"}>
-          <Button variant="outline" className="text-white cursor-pointer border-white hover:bg-white hover:text-indigo-600">
-            SignUp
-          </Button>
-          </Link>
+         
         </nav>
       </div>
 

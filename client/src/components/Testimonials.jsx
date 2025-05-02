@@ -14,7 +14,7 @@ export default function Testimonials() {
       quote: "I listed my flat and within days got responses from qualified tenants. The platform is simple yet incredibly effective for property owners.",
       author: "Sneha",
       role: "Landowner",
-      rating: 5
+      rating: 4
     },
     {
       id: 3,
@@ -25,9 +25,9 @@ export default function Testimonials() {
     },
     {
       id: 4,
-      quote: "Managing multiple properties has never been easier. The dashboard gives me all the tools I need in one place. Excellent service!",
+      quote: "Very smooth process to find rooms for rent no large amount of advance money and good landlord",
       author: "Priya",
-      role: "Property Manager",
+      role: "Tenant",
       rating: 5
     }
   ];
