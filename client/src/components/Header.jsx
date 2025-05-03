@@ -49,12 +49,7 @@ export default function Header() {
       </span>
     </button>
     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200">
-      <Link 
-        to="/my-properties" 
-        className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-      >
-        My Properties
-      </Link>
+    
       <button
         onClick={logout}
         className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"

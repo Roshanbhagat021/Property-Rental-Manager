@@ -1,8 +1,13 @@
-import { useState } from "react";
+
+import axios from "axios";
+import { useContext, useState } from "react";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function AddProperty() {
+
+  const {token}=useContext(AuthContext)
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
@@ -115,24 +120,60 @@ export default function AddProperty() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsSubmitting(true);
-      // Filter out empty URLs before submission
-      const submissionData = {
-        ...formData,
-        imageUrls: formData.imageUrls.filter((url) => url.trim() !== ""),
-      };
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     if (validateForm()) {
+//       setIsSubmitting(true);
+//       // Filter out empty URLs before submission
+//       const submissionData = {
+//         ...formData,
+//         imageUrls: formData.imageUrls.filter((url) => url.trim() !== ""),
+//       };
+// console.log("form Data",formData);
+//       // Simulate API call
+//       setTimeout(() => {
+//         console.log("Property submitted:", submissionData);
+//         setIsSubmitting(false);
+//         navigate("/properties"); // Redirect after successful submission
+//       }, 1500);
+//     }
+//   };
 
-      // Simulate API call
-      setTimeout(() => {
-        console.log("Property submitted:", submissionData);
-        setIsSubmitting(false);
-        navigate("/properties"); // Redirect after successful submission
-      }, 1500);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (validateForm()) {
+    setIsSubmitting(true);
+
+    const submissionData = {
+      ...formData,
+      imageUrls: formData.imageUrls.filter((url) => url.trim() !== ""),
+    };
+
+    // const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/property/create",
+        submissionData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Property submitted:", response.data);
+      navigate("/properties");
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Something went wrong!");
+    } finally {
+      setIsSubmitting(false);
     }
-  };
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">

@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config()
 const Landlord = require("../model/landlord.model"); 
 
 const landlordRouter = express.Router();
@@ -37,7 +38,7 @@ landlordRouter.post("/login", async (req, res) => {
       if (result) {
         const token = jwt.sign(
           { userID: landlord._id, user: landlord.name },
-          "jaiho"
+          process.env.JWT_SECRET
         );
         res.status(200).json({
           msg: "Logged In!",

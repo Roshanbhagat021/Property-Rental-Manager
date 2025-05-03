@@ -1,68 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
+import axios from "axios";
+const VITE_API_BASEURL = import.meta.env.VITE_API_BASEURL;
 
-const properties = [
-  {
-    id: 1,
-    title: "Modern Downtown",
-    address: "123 Main St, Cityville",
-    price: 1200,
-    bedrooms: 2,
-    bathrooms: 1,
-    size: 850,
-    type: "apartment",
-    amenities: ["parking", "gym", "laundry"],
-    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-    description: "Beautiful modern apartment in the heart of downtown with great amenities."
-  },
-  {
-    id: 2,
-    title: "Cozy Suburban House",
-    address: "456 Oak Ave, Townsville",
-    price: 1800,
-    bedrooms: 3,
-    bathrooms: 2,
-    size: 1200,
-    type: "house",
-    amenities: ["parking", "garden", "garage"],
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-    description: "Spacious house with large backyard in quiet neighborhood."
-  },
-  {
-    id: 3,
-    title: "Luxury Waterfront Condo",
-    address: "789 Beach Blvd, Coast City",
-    price: 2500,
-    bedrooms: 2,
-    bathrooms: 2,
-    size: 1100,
-    type: "condo",
-    amenities: ["pool", "gym", "security"],
-    image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6",
-    description: "Stunning views of the ocean from this luxury condo with pool access."
-  },
-  {
-    id: 4,
-    title: "Studio in Arts District",
-    address: "321 Creative Lane, Artstown",
-    price: 950,
-    bedrooms: 1,
-    bathrooms: 1,
-    size: 600,
-    type: "studio",
-    amenities: ["laundry", "bike-storage"],
-    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
-    description: "Charming studio in vibrant arts district with great natural light."
-  }
-];
 
 export default function PropertyListings() {
+  const [properties,setProperties] =useState([])
+  const [Errpr,setError] =useState("")
   const [filters, setFilters] = useState({
     minPrice: "",
     maxPrice: "",
-    propertyType: ""
+    propertypropertyType: ""
   });
+  
+  useEffect(()=>{
+    const fetchEventsData = async () => {
+      try {
+        const response = await axios.get( `${VITE_API_BASEURL}/property/allproperties`);
+        console.log('response: ', response);
+        setProperties(response.data);
+       
+      } catch (err) {
+        setError('Failed to load events. Please try again later.');
+      }
+    };
 
+    fetchEventsData();
+
+  
+  },[])
   const [sortOption, setSortOption] = useState("price-asc");
 
   const handleFilterChange = (e) => {
@@ -82,7 +48,7 @@ export default function PropertyListings() {
     return (
       (filters.minPrice === "" || property.price >= Number(filters.minPrice)) &&
       (filters.maxPrice === "" || property.price <= Number(filters.maxPrice)) &&
-      (filters.propertyType === "" || property.type === filters.propertyType)
+      (filters.propertypropertyType === "" || property.propertyType === filters.propertypropertyType)
     );
   });
 
@@ -92,10 +58,10 @@ export default function PropertyListings() {
         return a.price - b.price;
       case "price-desc":
         return b.price - a.price;
-      case "size-asc":
-        return a.size - b.size;
-      case "size-desc":
-        return b.size - a.size;
+      case "area-asc":
+        return a.area - b.area;
+      case "area-desc":
+        return b.area - a.area;
       default:
         return 0;
     }
@@ -109,7 +75,6 @@ export default function PropertyListings() {
           <p className="text-lg text-gray-600">Find your perfect home from our curated listings</p>
         </div>
 
-        {/* Filter and Sort Controls */}
         <div className="bg-white p-6 rounded-xl shadow-md mb-8">
         <div className="text-sm text-gray-500">
               Showing {sortedProperties.length} of {properties.length} properties
@@ -118,7 +83,7 @@ export default function PropertyListings() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Min Price ($)</label>
               <input
-                type="number"
+                propertyType="number"
                 name="minPrice"
                 value={filters.minPrice}
                 onChange={handleFilterChange}
@@ -129,7 +94,7 @@ export default function PropertyListings() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Max Price ($)</label>
               <input
-                type="number"
+                propertyType="number"
                 name="maxPrice"
                 value={filters.maxPrice}
                 onChange={handleFilterChange}
@@ -139,14 +104,14 @@ export default function PropertyListings() {
             </div>
          
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Property propertyType</label>
               <select
-                name="propertyType"
-                value={filters.propertyType}
+                name="propertypropertyType"
+                value={filters.propertypropertyType}
                 onChange={handleFilterChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               >
-                <option value="">All Types</option>
+                <option value="">All propertyTypes</option>
                 <option value="apartment">Apartment</option>
                 <option value="house">House</option>
                 <option value="condo">Condo</option>
@@ -162,8 +127,8 @@ export default function PropertyListings() {
               >
                 <option value="price-asc">Price (Low to High)</option>
                 <option value="price-desc">Price (High to Low)</option>
-                <option value="size-asc">Size (Small to Large)</option>
-                <option value="size-desc">Size (Large to Small)</option>
+                <option value="area-asc">area (Small to Large)</option>
+                <option value="area-desc">area (Large to Small)</option>
                 <option value="bedrooms-asc">Bedrooms (Few to Many)</option>
                 <option value="bedrooms-desc">Bedrooms (Many to Few)</option>
               </select>
@@ -175,14 +140,13 @@ export default function PropertyListings() {
           </div>
         </div>
 
-        {/* Property Listings */}
         {sortedProperties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedProperties.map((property) => (
-              <div key={property.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div key={property._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="h-48 overflow-hidden">
                   <img 
-                    src={property.image} 
+                    src={property.imageUrls[0]} 
                     alt={property.title}
                     className="w-full h-full object-cover"
                   />
@@ -213,7 +177,7 @@ export default function PropertyListings() {
                       <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                       </svg>
-                      {property.size} sq ft
+                      {property.area} sq ft
                     </div>
                   </div>
 
@@ -248,7 +212,7 @@ export default function PropertyListings() {
                 minPrice: "",
                 maxPrice: "",
                 bedrooms: "",
-                propertyType: ""
+                propertypropertyType: ""
               })}
               className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white"
             >

@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Tenant = require("../model/tenent.model"); 
+require("dotenv").config()
 
 const tenantRouter = express.Router();
 
@@ -51,7 +52,7 @@ tenantRouter.post("/login", async (req, res) => {
 
     bcrypt.compare(password, tenant.password, (err, result) => {
       if (result) {
-        const token = jwt.sign({ tenantID: tenant._id, name: tenant.name }, "helloji");
+        const token = jwt.sign({ tenantID: tenant._id, name: tenant.name }, process.env.JWT_SECRET);
         res.status(200).json({
           msg: "Logged in successfully!",
           token,
